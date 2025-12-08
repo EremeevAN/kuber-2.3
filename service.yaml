@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-ng-ssl
+spec:
+  selector:
+    app: nginx-tls
+  type: ClusterIP
+  ports:
+  - name: nginx
+    port: 80
+    targetPort: web

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Cтраница с Котиком</title>
+    </head>
+    <body>
+      <h1>./\…/\
+        (.‘•..•’.)
+          ..=*=..
+        (.\.||./.)~~** Тут живет котик</h1>
+    </body>
+    </html>

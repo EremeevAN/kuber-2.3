@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  annotations:
+   container: nginx
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: nginx-tls
+  template:
+    metadata:
+      labels:
+        app: nginx-tls
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - name: web
+              containerPort: 80
+          volumeMounts:
+          - name: nginx-config
+            mountPath: "/usr/share/nginx/html"
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: web

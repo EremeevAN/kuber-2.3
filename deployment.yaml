@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxmultitool
+  annotations:
+    container1: nginx
+    container2: multitools
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: nginx-multitool
+  template:
+    metadata:
+      labels:
+        app: nginx-multitool
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - name: web
+              containerPort: 80
+          volumeMounts:
+          - name: nginx-config
+            mountPath: "/usr/share/nginx/html"
+#            mountPath: /etc/nginx/conf.d
+        - name: multitool
+          image: praqma/network-multitool:alpine-extra
+          resources:
+          env:
+            - name: HTTP_PORT
+              value: "1181"
+            - name: HTTPS_PORT
+              value: "1443"
+          ports:
+            - name: http
+              containerPort: 1181
+              protocol: TCP
+            - name: https
+              containerPort: 1443
+              protocol: TCP
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: web
